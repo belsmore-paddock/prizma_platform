@@ -1,0 +1,4 @@
+language: csharp
+dotnet: 2.1.400
+mono: 5.14.0
+solution: PrizmaPlatform.sln

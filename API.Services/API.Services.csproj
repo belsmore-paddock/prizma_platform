@@ -1,27 +1,20 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
-    <RootNamespace>Prizma.API</RootNamespace>
+    <RootNamespace>Prizma.API.Services</RootNamespace>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
     <PackageReference Include="JsonApiDotNetCore" Version="2.5.2" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API.Services\API.Services.csproj" />
     <ProjectReference Include="..\API.ViewModels\API.ViewModels.csproj" />
-    <ProjectReference Include="..\Domain.Repositories\Domain.Repositories.csproj" />
+    <ProjectReference Include="..\Domain.Models\Domain.Models.csproj" />
     <ProjectReference Include="..\Domain.Services\Domain.Services.csproj" />
-    <ProjectReference Include="..\Persistence.Repositories\Persistence.Repositories.csproj" />
   </ItemGroup>
 
 </Project>
