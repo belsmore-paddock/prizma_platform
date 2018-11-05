@@ -1,8 +1,11 @@
 ﻿namespace Prizma.Domain.Models.Builders
 {
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     using FluentValidation;
+    using FluentValidation.Results;
 
     using Prizma.Domain.Models.Interfaces;
 
@@ -36,7 +39,12 @@
         public virtual T Build()
         {
             var model = this.DoBuild();
-            this.Validate(model);
+            var errors = this.Validate(model);
+            if (errors.Any())
+            {
+                throw new BuilderValidationException($"Validation failed during construction of domain model of type: {typeof(T)}.", errors);
+            }
+
             return model;
         }
 
@@ -47,12 +55,12 @@
         /// The target entity being validated.
         /// </param>
         /// <returns>
-        /// The <see cref="bool"/>.
+        /// The <see cref="IList"/> of validation failures.
         /// </returns>
-        protected virtual bool Validate(T target)
+        protected virtual IList<ValidationFailure> Validate(T target)
         {
             var results = this.Validator.Validate(target);
-            return results.IsValid;
+            return results.Errors;
         }
     }
 }

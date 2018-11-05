@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Repositories", "Doma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Services", "Domain.Services\Domain.Services.csproj", "{8F9327FE-56E2-40A0-8766-887C52A7080B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.Repositories", "Persistence.Repositories\Persistence.Repositories.csproj", "{18558AE0-DE87-48E1-A668-98C5730AA05C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistence.Repositories", "Persistence.Repositories\Persistence.Repositories.csproj", "{18558AE0-DE87-48E1-A668-98C5730AA05C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Models.Tests", "Domain.Models.Tests\Domain.Models.Tests.csproj", "{56205820-1066-40CA-B43B-D127C618F004}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{18558AE0-DE87-48E1-A668-98C5730AA05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18558AE0-DE87-48E1-A668-98C5730AA05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{18558AE0-DE87-48E1-A668-98C5730AA05C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56205820-1066-40CA-B43B-D127C618F004}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56205820-1066-40CA-B43B-D127C618F004}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56205820-1066-40CA-B43B-D127C618F004}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56205820-1066-40CA-B43B-D127C618F004}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

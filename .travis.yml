@@ -1,4 +1,7 @@
 language: csharp
 dotnet: 2.1.400
 mono: 5.14.0
-solution: PrizmaPlatform.sln
+script:
+  - dotnet restore
+  - dotnet build ./PrizmaPlatform.sln --configuration Release
+  - dotnet test ./Domain.Models.Tests/Domain.Models.Tests.csproj
