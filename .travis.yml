@@ -5,3 +5,4 @@ script:
   - dotnet restore
   - dotnet build ./PrizmaPlatform.sln --configuration Release
   - dotnet test ./Domain.Models.Tests/Domain.Models.Tests.csproj
+  - dotnet test ./Domain.Services.Tests/Domain.Services.Tests.csproj

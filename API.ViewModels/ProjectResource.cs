@@ -14,6 +14,6 @@
         /// </summary>
         [Attr("description")]
         [Required]
-        public string Description { get; private set; }
+        public string Description { get; private set; } // Should only be set via mapping.
     }
 }
