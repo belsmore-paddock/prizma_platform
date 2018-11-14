@@ -9,10 +9,16 @@
     /// </summary>
     public class AutoMapperAdapter : IResourceMapper
     {
+        #region Private Fields
+
         /// <summary>
         /// The mapper.
         /// </summary>
         private readonly IMapper mapper;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AutoMapperAdapter"/> class.
@@ -24,6 +30,10 @@
         {
             this.mapper = mapper;
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Maps the provided object to the destination type.
@@ -61,5 +71,7 @@
         {
             return this.mapper.Map<TSource, TDestination>(source);
         }
+
+        #endregion
     }
 }

@@ -9,6 +9,7 @@
     using Moq;
 
     using Prizma.Domain.Models.Builders;
+    using Prizma.Domain.Models.Exceptions;
 
     using Xunit;
 

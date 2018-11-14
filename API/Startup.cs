@@ -114,8 +114,8 @@
                         options.Namespace = "api";
                         options.DefaultPageSize = 25;
                         options.RelativeLinks = true;
-                        options.BuildContextGraph(
-                            builder => { builder.AddResource<ProjectResource, Guid>("project"); });
+                        options.BuildResourceGraph(
+                            builder => builder.AddResource<ProjectResource, Guid>("project"));
                     },
                 mvcBuilder);
 

@@ -7,6 +7,7 @@
     using FluentValidation;
     using FluentValidation.Results;
 
+    using Prizma.Domain.Models.Exceptions;
     using Prizma.Domain.Models.Interfaces;
 
     /// <summary>

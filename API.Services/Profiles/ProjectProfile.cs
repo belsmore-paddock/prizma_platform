@@ -11,6 +11,8 @@
     /// </summary>
     public class ProjectProfile : Profile
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectProfile"/> class.
         /// </summary>
@@ -22,5 +24,7 @@
             // Incoming
             this.CreateMap<ProjectResource, Project>();
         }
+
+        #endregion
     }
 }

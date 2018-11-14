@@ -16,6 +16,8 @@
     [ApiController]
     public class ProjectController : JsonApiController<ProjectResource, Guid>
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectController"/> class.
         /// </summary>
@@ -31,5 +33,7 @@
             : base(jsonApiContext, resourceService)
         {
         }
+
+        #endregion
     }
 }

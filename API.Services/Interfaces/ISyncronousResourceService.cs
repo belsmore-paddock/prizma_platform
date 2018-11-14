@@ -114,6 +114,6 @@
         void UpdateRelationships(
             Guid id,
             string relationshipName,
-            List<DocumentData> relationships);
+            List<ResourceObject> relationships);
     }
 }

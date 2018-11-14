@@ -4,7 +4,7 @@
 
     using FluentValidation.Results;
 
-    using Prizma.Domain.Models.Builders;
+    using Prizma.Domain.Models.Exceptions;
 
     using Xunit;
 

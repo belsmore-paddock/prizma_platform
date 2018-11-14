@@ -20,6 +20,8 @@
     /// </typeparam>
     public abstract class ResourceServiceBase<T> : ResourceBase, ISynchronousResourceService<T>, IResourceService<T, Guid> where T : ResourceBase
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ResourceServiceBase{T}"/> class.
         /// </summary>
@@ -31,10 +33,18 @@
             this.Mapper = mapper;
         }
 
+        #endregion
+
+        #region Protected Properties
+
         /// <summary>
         /// Gets the auto mapper instance.
         /// </summary>
         protected IMapper Mapper { get; }
+
+        #endregion
+
+        #region Public Methods
 
         /// <inheritdoc />
         public abstract Task<T> CreateAsync(T entity);
@@ -61,7 +71,7 @@
         public abstract Task UpdateRelationshipsAsync(
             Guid id,
             string relationshipName,
-            List<DocumentData> relationships);
+            List<ResourceObject> relationships);
 
         /// <inheritdoc />
         public abstract T Create(T resource);
@@ -85,6 +95,38 @@
         public abstract T Update(Guid id, T resource);
 
         /// <inheritdoc />
-        public abstract void UpdateRelationships(Guid id, string relationshipName, List<DocumentData> relationships);
+        public abstract void UpdateRelationships(Guid id, string relationshipName, List<ResourceObject> relationships);
+
+        #endregion
+
+        #region Protected Methods
+
+        /// <summary>
+        /// Performs the provided function operation with centralized error handling.
+        /// </summary>
+        /// <param name="performAction">
+        /// The action to be performed.
+        /// </param>
+        /// <typeparam name="TR">
+        /// Result type of the function.
+        /// </typeparam>
+        /// <returns>
+        /// The <see cref="TR"/>.
+        /// </returns>
+        protected TR DoPerformOperation<TR>(Func<TR> performAction)
+        {
+            try
+            {
+                return performAction.Invoke();
+            }
+            catch (Exception exception)
+            {
+                // TODO: Log here
+                Console.WriteLine(exception);
+                throw;
+            }
+        }
+
+        #endregion
     }
 }

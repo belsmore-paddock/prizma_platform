@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JsonApiDotNetCore" Version="2.5.2" />
+    <PackageReference Include="JsonApiDotNetCore" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

@@ -10,10 +10,10 @@
     public class ProjectResource : ResourceBase
     {
         /// <summary>
-        /// Gets the description.
+        /// Gets or sets the description.
         /// </summary>
         [Attr("description")]
         [Required]
-        public string Description { get; private set; } // Should only be set via mapping.
+        public string Description { get; set; }
     }
 }

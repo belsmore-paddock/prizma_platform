@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="7.0.1" />
-    <PackageReference Include="JsonApiDotNetCore" Version="2.5.2" />
+    <PackageReference Include="JsonApiDotNetCore" Version="3.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 

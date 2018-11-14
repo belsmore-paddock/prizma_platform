@@ -10,19 +10,27 @@
 
     using JsonApiDotNetCore.Models;
 
+    using Prizma.API.Services.Interfaces;
     using Prizma.API.ViewModels;
     using Prizma.Domain.Models;
+    using Prizma.Domain.Models.Builders;
     using Prizma.Domain.Services.Interfaces;
 
     /// <summary>
     /// The project resource service handles interaction between the UI and the domain layer.
     /// </summary>
-    public class ProjectResourceService : ResourceServiceBase<ProjectResource>
+    public class ProjectResourceService : ResourceServiceBase<ProjectResource>, IProjectResourceService
     {
+        #region Private Fields
+
         /// <summary>
         /// The project service.
         /// </summary>
         private readonly IProjectService projectService;
+
+        #endregion
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProjectResourceService"/> class.
@@ -37,6 +45,10 @@
         {
             this.projectService = projectService;
         }
+
+        #endregion
+
+        #region Public Methods
 
         /// <summary>
         /// Creates a new project resource asynchronously.
@@ -84,9 +96,9 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task UpdateRelationshipsAsync(Guid id, string relationshipName, List<DocumentData> relationships)
+        public override Task UpdateRelationshipsAsync(Guid id, string relationshipName, List<ResourceObject> relationships)
         {
-            return Task.Run(() => { this.UpdateRelationships(id, relationshipName, relationships); });
+            return Task.Run(() => this.UpdateRelationships(id, relationshipName, relationships));
         }
 
         /// <summary>
@@ -173,18 +185,7 @@
         /// </returns>
         public override ProjectResource Create(ProjectResource resource)
         {
-            try
-            {
-                var entity = this.Mapper.Map<Project>(resource);
-                var resultEntity = this.projectService.Create(entity);
-                return this.Mapper.Map<ProjectResource>(resultEntity);
-            }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+            return this.DoPerformOperation(() => this.DoCreate(resource));
         }
 
         /// <summary>
@@ -198,16 +199,7 @@
         /// </returns>
         public override bool Delete(Guid id)
         {
-            try
-            {
-                return this.projectService.Delete(id);
-            }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+            return this.DoPerformOperation(() => this.projectService.Delete(id));
         }
 
         /// <summary>
@@ -218,11 +210,7 @@
         /// </returns>
         public override IEnumerable<ProjectResource> Get()
         {
-
-                var resultEntities = this.projectService.GetAll();
-                var resultResources = this.Mapper.Map<IList<ProjectResource>>(resultEntities);
-                return resultResources.AsEnumerable();
-
+            return this.DoPerformOperation(this.DoGet);
         }
 
         /// <summary>
@@ -236,17 +224,7 @@
         /// </returns>
         public override ProjectResource Get(Guid id)
         {
-            try
-            {
-                var resultEntity = this.projectService.Get(id);
-                return this.Mapper.Map<ProjectResource>(resultEntity);
-            }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+            return this.DoPerformOperation(() => this.DoGetById(id));
         }
 
         /// <summary>
@@ -263,16 +241,7 @@
         /// </returns>
         public override object GetRelationship(Guid id, string relationshipName)
         {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -289,16 +258,7 @@
         /// </returns>
         public override object GetRelationships(Guid id, string relationshipName)
         {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -315,18 +275,12 @@
         /// </returns>
         public override ProjectResource Update(Guid id, ProjectResource resource)
         {
-            try
+            if (id != resource.Id)
             {
-                var entity = this.Mapper.Map<Project>(resource);
-                var resultEntity = this.projectService.Update(entity);
-                return this.Mapper.Map<ProjectResource>(resultEntity);
+                throw new ArgumentException("Id mismatch. Provided id does not match provided resource id.");
             }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+
+            return this.DoPerformOperation(() => this.DoUpdate(resource));
         }
 
         /// <summary>
@@ -341,18 +295,79 @@
         /// <param name="relationships">
         /// The relationship data being updated.
         /// </param>
-        public override void UpdateRelationships(Guid id, string relationshipName, List<DocumentData> relationships)
+        public override void UpdateRelationships(Guid id, string relationshipName, List<ResourceObject> relationships)
         {
-            try
-            {
-                throw new NotImplementedException();
-            }
-            catch (Exception exception)
-            {
-                // TODO: Log here
-                Console.WriteLine(exception);
-                throw;
-            }
+            throw new NotImplementedException();
         }
+
+        #endregion
+
+        #region Private Methods
+
+        /// <summary>
+        /// Does the operation to retrieve a single project resource by id.
+        /// </summary>
+        /// <param name="id">
+        /// The id of the target resource to be retrieved.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ProjectResource"/>.
+        /// </returns>
+        private ProjectResource DoGetById(Guid id)
+        {
+            var resultEntity = this.projectService.Get(id);
+            return this.Mapper.Map<ProjectResource>(resultEntity);
+        }
+
+        /// <summary>
+        /// Does the operation to do a full get of project resources.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="IEnumerable"/> of project resources.
+        /// </returns>
+        private IEnumerable<ProjectResource> DoGet()
+        {
+            var resultEntities = this.projectService.GetAll();
+            var resultResources = this.Mapper.Map<IList<ProjectResource>>(resultEntities);
+            return resultResources.AsEnumerable();
+        }
+
+        /// <summary>
+        /// Does the resource creation.
+        /// </summary>
+        /// <param name="resource">
+        /// The resource being created.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ProjectResource"/>.
+        /// </returns>
+        private ProjectResource DoCreate(ProjectResource resource)
+        {
+            var entity = new ProjectBuilder()
+                .WithId()
+                .WithDescription(resource.Description)
+                .Build();
+
+            var resultEntity = this.projectService.Create(entity);
+            return this.Mapper.Map<ProjectResource>(resultEntity);
+        }
+
+        /// <summary>
+        /// Does the resource update.
+        /// </summary>
+        /// <param name="resource">
+        /// The resource being updated.
+        /// </param>
+        /// <returns>
+        /// The <see cref="ProjectResource"/>.
+        /// </returns>
+        private ProjectResource DoUpdate(ProjectResource resource)
+        {
+            var entity = this.Mapper.Map<Project>(resource);
+            var resultEntity = this.projectService.Update(entity);
+            return this.Mapper.Map<ProjectResource>(resultEntity);
+        }
+
+        #endregion
     }
 }

@@ -1,9 +1,13 @@
-﻿namespace Prizma.Domain.Models.Builders
+﻿namespace Prizma.Domain.Models.Exceptions
 {
     using System;
     using System.Collections.Generic;
+
     using FluentValidation.Results;
 
+    /// <summary>
+    /// The builder validation exception is thrown when a builder is unable to build a valid object.
+    /// </summary>
     public class BuilderValidationException : Exception
     {
         /// <summary>
@@ -15,8 +19,6 @@
         /// <param name="errors">
         /// The errors.
         /// </param>
-        /// <exception cref="NotImplementedException">
-        /// </exception>
         public BuilderValidationException(string message, IList<ValidationFailure> errors) : base(message)
         {
             this.Errors = errors;
