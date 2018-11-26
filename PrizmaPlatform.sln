@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Models.Tests", "Doma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Services.Tests", "Domain.Services.Tests\Domain.Services.Tests.csproj", "{F3D1FB47-D344-41BD-8C5F-FDEBD21D270B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Services.Tests", "API.Services.Tests\API.Services.Tests.csproj", "{EE0E3C3B-BCB0-4946-91CC-7703F35A77A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API.Services.Tests", "API.Services.Tests\API.Services.Tests.csproj", "{EE0E3C3B-BCB0-4946-91CC-7703F35A77A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Tests", "API.Tests\API.Tests.csproj", "{2374AB24-0DC0-4DDB-9301-04C666F14804}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +71,10 @@ Global
 		{EE0E3C3B-BCB0-4946-91CC-7703F35A77A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE0E3C3B-BCB0-4946-91CC-7703F35A77A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE0E3C3B-BCB0-4946-91CC-7703F35A77A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2374AB24-0DC0-4DDB-9301-04C666F14804}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2374AB24-0DC0-4DDB-9301-04C666F14804}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2374AB24-0DC0-4DDB-9301-04C666F14804}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2374AB24-0DC0-4DDB-9301-04C666F14804}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

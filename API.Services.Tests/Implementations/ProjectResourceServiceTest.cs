@@ -41,6 +41,10 @@
             this.projectResourceService = new ProjectResourceService(this.mockProjectService.Object, this.mockMapper.Object);
         }
 
+        /// <summary>
+        /// Verifies the expected behavior when the create method is called with a valid resource.
+        /// The expected result is to receive the created resource.
+        /// </summary>
         [Fact(DisplayName = "Create with a valid project resource returns a created resource.")]
         public void CreateWithValidProjectResourceReturnsCreatedResource()
         {
