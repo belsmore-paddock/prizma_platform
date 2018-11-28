@@ -1,6 +1,7 @@
 ﻿namespace Prizma.Domain.Models.Builders
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -24,14 +25,6 @@
         protected abstract IValidator<T> Validator { get; }
 
         /// <summary>
-        /// Performs the build operation which constructs and validates the resulting entity.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T"/>.
-        /// </returns>
-        public abstract T DoBuild();
-
-        /// <summary>
         /// Builds a new Project model.
         /// </summary>
         /// <returns>
@@ -48,6 +41,14 @@
 
             return model;
         }
+
+        /// <summary>
+        /// Performs the build operation which constructs and validates the resulting entity.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="T"/>.
+        /// </returns>
+        protected abstract T DoBuild();
 
         /// <summary>
         /// Performs the validation of the constructed model.

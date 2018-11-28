@@ -4,6 +4,7 @@
     using System.Collections.Generic;
 
     using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Storage;
 
     using Prizma.Domain.Repositories;
 
@@ -21,6 +22,11 @@
         /// The repositories.
         /// </summary>
         private readonly IDictionary<Type, Type> repositories = new Dictionary<Type, Type>();
+
+        /// <summary>
+        /// The transaction associated with the current unit of work.
+        /// </summary>
+        private IDbContextTransaction transaction;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UnitOfWork"/> class.
@@ -64,7 +70,7 @@
         /// </summary>
         public void BeginTransaction()
         {
-            this.context.Database.BeginTransaction(); // Technically EF already implements UoW, but no guarantee EF will always be used.
+            this.transaction = this.context.Database.BeginTransaction(); // Technically EF already implements UoW, but no guarantee EF will always be used.
         }
 
         /// <summary>
@@ -72,7 +78,23 @@
         /// </summary>
         public void CommitTransaction()
         {
-            this.context.SaveChanges(); // This should automatically commit the transaction
+            try
+            {
+                this.context.SaveChanges();
+                this.transaction.Commit();
+            }
+            catch
+            {
+                this.RollbackTransaction();
+            }
+        }
+
+        /// <summary>
+        /// Performs a rollback if there is a pending transaction.
+        /// </summary>
+        public void RollbackTransaction()
+        {
+            this.transaction?.Rollback();
         }
 
         /// <summary>
@@ -80,6 +102,8 @@
         /// </summary>
         public void Dispose()
         {
+            this.repositories.Clear();
+            this.transaction?.Dispose();
             this.context?.Dispose();
         }
     }

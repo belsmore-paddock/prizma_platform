@@ -277,7 +277,7 @@
         {
             if (id != resource.Id)
             {
-                throw new ArgumentException("Id mismatch. Provided id does not match provided resource id.");
+                throw new ArgumentException("Id mismatch. Provided id does not match provided resource id.", nameof(id));
             }
 
             return this.DoPerformOperation(() => this.DoUpdate(resource));

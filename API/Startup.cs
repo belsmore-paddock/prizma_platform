@@ -82,7 +82,7 @@
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
+            app.UseJsonApi();
         }
 
         /// <summary>
@@ -97,6 +97,7 @@
             var mapper = config.CreateMapper();
 
             services.AddSingleton(mapper);
+            services.AddScoped<IResourceMapper, AutoMapperAdapter>();
         }
 
         /// <summary>
@@ -108,18 +109,18 @@
         protected virtual void ConfigureJsonApiServices(IServiceCollection services)
         {
             var mvcBuilder = services.AddMvcCore();
+
             services.AddJsonApi(
                 options =>
                     {
                         options.Namespace = "api";
                         options.DefaultPageSize = 25;
                         options.RelativeLinks = true;
+                        options.ValidateModelState = true;
                         options.BuildResourceGraph(
                             builder => builder.AddResource<ProjectResource, Guid>("project"));
                     },
                 mvcBuilder);
-
-            services.AddScoped<IResourceMapper, AutoMapperAdapter>();
         }
 
         /// <summary>

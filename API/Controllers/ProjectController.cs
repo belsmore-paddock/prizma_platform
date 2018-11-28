@@ -5,15 +5,11 @@
     using JsonApiDotNetCore.Controllers;
     using JsonApiDotNetCore.Services;
 
-    using Microsoft.AspNetCore.Mvc;
-
     using Prizma.API.ViewModels;
 
     /// <summary>
     /// The project controller.
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
     public class ProjectController : JsonApiController<ProjectResource, Guid>
     {
         #region Constructors

@@ -79,17 +79,6 @@
             protected override IValidator<DomainBaseTestClass> Validator => this.validator;
 
             /// <summary>
-            /// Performs the object construction.
-            /// </summary>
-            /// <returns>
-            /// The <see cref="DomainBaseTestClass"/>.
-            /// </returns>
-            public override DomainBaseTestClass DoBuild()
-            {
-                return new DomainBaseTestClass(Guid.Empty);
-            }
-
-            /// <summary>
             /// Provides a mechanism to to provide a validator object for testing purposes.
             /// </summary>
             /// <param name="validatorInstance">
@@ -102,6 +91,17 @@
             {
                 this.validator = validatorInstance;
                 return this;
+            }
+
+            /// <summary>
+            /// Performs the object construction.
+            /// </summary>
+            /// <returns>
+            /// The <see cref="DomainBaseTestClass"/>.
+            /// </returns>
+            protected override DomainBaseTestClass DoBuild()
+            {
+                return new DomainBaseTestClass(Guid.Empty);
             }
         }
     }

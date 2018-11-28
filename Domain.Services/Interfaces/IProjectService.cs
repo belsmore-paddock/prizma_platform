@@ -62,5 +62,16 @@
         /// The <see cref="bool"/>.
         /// </returns>
         bool Delete(Guid id);
+
+        /// <summary>
+        /// The bulk create method accepts a set of entries to perform a bulk insert on.
+        /// </summary>
+        /// <param name="projectSet">
+        /// The project set to be inserted.
+        /// </param>
+        /// <returns>
+        /// The <see cref="IList"/> of created projects.
+        /// </returns>
+        IList<Project> BulkCreate(ISet<Project> projectSet);
     }
 }

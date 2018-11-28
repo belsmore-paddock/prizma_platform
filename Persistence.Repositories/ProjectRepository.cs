@@ -35,7 +35,7 @@
         /// </returns>
         public bool Exists(Guid id)
         {
-            return this.Context.Query<Project>().Any(p => p.Id == id);
+            return this.Context.Set<Project>().Any(p => p.Id == id);
         }
     }
 }

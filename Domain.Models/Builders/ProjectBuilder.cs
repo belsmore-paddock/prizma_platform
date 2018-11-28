@@ -27,17 +27,6 @@
         protected override IValidator<Project> Validator { get; } = new ProjectConstructionValidator();
 
         /// <summary>
-        /// Performs a creation of the project entity.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="Project"/>.
-        /// </returns>
-        public override Project DoBuild()
-        {
-            return new Project(this);
-        }
-
-        /// <summary>
         /// Builds new Project with a random Id.
         /// </summary>
         /// <returns>
@@ -77,6 +66,17 @@
         {
             this.Description = description;
             return this;
+        }
+
+        /// <summary>
+        /// Performs a creation of the project entity.
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Project"/>.
+        /// </returns>
+        protected override Project DoBuild()
+        {
+            return new Project(this);
         }
     }
 }

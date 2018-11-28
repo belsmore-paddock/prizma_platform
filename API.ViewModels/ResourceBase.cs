@@ -14,7 +14,18 @@
         /// </summary>
         public string StringId
         {
-            get => this.Id.ToString();
+            get
+            {
+                var returnValue = string.Empty;
+
+                if (this.Id != Guid.Empty)
+                {
+                    returnValue = this.Id.ToString();
+                }
+
+                return returnValue;
+            }
+
             set => this.Id = Guid.Parse(value);
         }
 

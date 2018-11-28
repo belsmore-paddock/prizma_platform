@@ -27,5 +27,10 @@
         /// Commits any pending transactions for the UoW.
         /// </summary>
         void CommitTransaction();
+
+        /// <summary>
+        /// Performs a rollback on the pending transaction.
+        /// </summary>
+        void RollbackTransaction();
     }
 }
