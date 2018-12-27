@@ -1,0 +1,13 @@
+<h3>Project #{{ project.id }}</h3>
+<!-- <pre>authors.get('{{ project.id }}', {{ '{' }} include: [] {{ '}' }});</pre> -->
+<ul>
+    <li>Description: <strong>{{ project.attributes.description }}</strong></li>
+</ul>
+<p>
+    <button (click)="newProject()">New project</button>
+    <button (click)="updateProject()">Update project</button>
+</p>
+
+<p>
+    <a routerLink="/projects">Projects</a>
+</p>

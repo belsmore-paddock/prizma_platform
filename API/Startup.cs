@@ -10,6 +10,7 @@
     using Domain.Services.Interfaces;
 
     using JsonApiDotNetCore.Extensions;
+    using JsonApiDotNetCore.Graph;
     using JsonApiDotNetCore.Models;
     using JsonApiDotNetCore.Services;
 
@@ -82,6 +83,7 @@
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors();
             app.UseJsonApi();
         }
 
@@ -104,11 +106,20 @@
         /// Configures json api services with the service collection for IoC.
         /// </summary>
         /// <param name="services">
-        /// The services.
+        /// The <paramref name="services"/>.
         /// </param>
         protected virtual void ConfigureJsonApiServices(IServiceCollection services)
         {
             var mvcBuilder = services.AddMvcCore();
+
+            services.AddCors(options =>
+                    {
+                        // Because why not? TODO: Create an appropriate policy
+                        options.AddDefaultPolicy(builder => 
+                            builder.AllowAnyHeader()
+                                .AllowAnyMethod()
+                                .AllowAnyOrigin());
+                    });
 
             services.AddJsonApi(
                 options =>
@@ -118,7 +129,8 @@
                         options.RelativeLinks = true;
                         options.ValidateModelState = true;
                         options.BuildResourceGraph(
-                            builder => builder.AddResource<ProjectResource, Guid>("project"));
+                            builder => builder.AddResource<ProjectResource, Guid>("project")
+                                .UseNameFormatter(new DefaultResourceNameFormatter()));
                     },
                 mvcBuilder);
         }
@@ -163,7 +175,7 @@
         /// Configures the API Application services with the service collection for IoC.
         /// </summary>
         /// <param name="services">
-        /// The services.
+        /// The <paramref name="services"/>.
         /// </param>
         protected virtual void ConfigureApiServices(IServiceCollection services)
         {

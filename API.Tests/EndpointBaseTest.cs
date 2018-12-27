@@ -3,11 +3,6 @@
     using System;
     using System.Net.Http;
 
-    using Microsoft.EntityFrameworkCore;
-    using Microsoft.Extensions.DependencyInjection;
-
-    using Prizma.Persistence.Repositories;
-
     using Xunit;
 
     /// <summary>

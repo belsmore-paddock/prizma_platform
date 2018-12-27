@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\API\API.csproj" />
+    <ProjectReference Include="..\Persistence.Repositories\Persistence.Repositories.csproj" />
   </ItemGroup>
 
 </Project>

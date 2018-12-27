@@ -1,0 +1,20 @@
+<h3>Projects</h3>
+<p>
+  <button (click)="newProject()">New project</button>
+</p>
+<collection-info [collection]="projects"></collection-info>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tr *ngFor="let project of projects.data; trackBy: projects.trackBy">
+    <td>{{ project.id }}</td>
+    <td>
+      <a [routerLink]="['/projects', project.id]">{{ project.attributes.description }}</a>
+    </td>
+  </tr>
+</table>
+<collection-paginator [collection]="projects"></collection-paginator>

@@ -26,7 +26,12 @@
                 return returnValue;
             }
 
-            set => this.Id = Guid.Parse(value);
+            set
+            {
+                var setValue = Guid.Empty;
+                Guid.TryParse(value, out setValue);
+                this.Id = setValue;
+            }
         }
 
         /// <summary>
