@@ -71,7 +71,7 @@
 
             Assert.NotNull(exception);
             Assert.Equal("Validation failed during construction of domain model of type: Prizma.Domain.Models.Project.", exception.Message);
-            Assert.Equal("\'Description\' should not be empty.", errorMessage.ErrorMessage);
+            Assert.Equal("\'Description\' must not be empty.", errorMessage.ErrorMessage);
             Assert.Equal("Description", errorMessage.PropertyName);
         }
 
@@ -91,7 +91,7 @@
 
             Assert.NotNull(exception);
             Assert.Equal("Validation failed during construction of domain model of type: Prizma.Domain.Models.Project.", exception.Message);
-            Assert.Equal("\'Id\' should not be empty.", errorMessage.ErrorMessage);
+            Assert.Equal("\'Id\' must not be empty.", errorMessage.ErrorMessage);
             Assert.Equal("Id", errorMessage.PropertyName);
         }
 
@@ -110,10 +110,10 @@
             var idError = exception.Errors.Single(e => e.PropertyName.Equals("Id"));
             var descriptionError = exception.Errors.Single(e => e.PropertyName.Equals("Description"));
 
-            Assert.Equal("\'Id\' should not be empty.", idError.ErrorMessage);
+            Assert.Equal("\'Id\' must not be empty.", idError.ErrorMessage);
             Assert.Equal("Id", idError.PropertyName);
 
-            Assert.Equal("\'Description\' should not be empty.", descriptionError.ErrorMessage);
+            Assert.Equal("\'Description\' must not be empty.", descriptionError.ErrorMessage);
             Assert.Equal("Description", descriptionError.PropertyName);
         }
     }
