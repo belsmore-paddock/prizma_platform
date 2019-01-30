@@ -14,7 +14,7 @@
     /// <typeparam name="T">
     /// Resource class type.
     /// </typeparam>
-    public interface ISynchronousResourceService<T> where T : ResourceBase
+    public interface ISynchronousResourceService<T> where T : IIdentifiable<Guid>
     {
         /// <summary>
         /// Creates a new resource.

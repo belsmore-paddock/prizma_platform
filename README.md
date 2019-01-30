@@ -16,3 +16,6 @@ Inital objectives for this project. Subject to change with mood!
     * Define user roles
     * Apply role checks to Controllers
     * Update frontend with authentication options
+
+### Other
+Switch away from Travis!

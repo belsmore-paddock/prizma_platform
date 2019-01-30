@@ -7,82 +7,82 @@
     using Prizma.Domain.Models;
 
     /// <summary>
-    /// The Project Service interface defines the contract for the domain business logic for project entities.
+    /// The User Service <see langword="interface"/> provides the structure to work with user objects.
     /// </summary>
-    public interface IProjectService
+    public interface IUserService
     {
         /// <summary>
-        /// Creates a new project entity.
+        /// Creates a new user entity.
         /// </summary>
         /// <param name="entity">
         /// The entity being persisted.
         /// </param>
         /// <returns>
-        /// The <see cref="Project"/>.
+        /// The <see cref="User"/>.
         /// </returns>
-        Project Create(Project entity);
+        User Create(User entity);
 
         /// <summary>
-        /// Updates an existing project entity.
+        /// Updates an existing user entity.
         /// </summary>
         /// <param name="entity">
         /// The entity being updated.
         /// </param>
         /// <returns>
-        /// The <see cref="Project"/>.
+        /// The <see cref="User"/>.
         /// </returns>
-        Project Update(Project entity);
+        User Update(User entity);
 
         /// <summary>
-        /// Returns all project entities persisted.
+        /// Returns all user entities persisted.
         /// </summary>
         /// <returns>
         /// The <see cref="IList"/>.
         /// </returns>
-        IList<Project> GetAll();
+        IList<User> GetAll();
 
         /// <summary>
-        /// Gets a single project entity matching the provided id.
+        /// Gets a single user entity matching the provided id.
         /// </summary>
         /// <param name="id">
         /// The target id of the persisted entity.
         /// </param>
         /// <returns>
-        /// The <see cref="Project"/>.
+        /// The <see cref="User"/>.
         /// </returns>
-        Project GetById(Guid id);
+        User GetById(Guid id);
 
         /// <summary>
-        /// Gets a project by id. If project does not exist, method returns null.
+        /// Gets a single user entity matching the provided id or providing a default null value if not exists.
         /// </summary>
         /// <param name="id">
-        /// The target project id.
+        /// The target id of the persisted entity.
         /// </param>
         /// <returns>
-        /// The <see cref="Project"/>.
+        /// The <see cref="User"/>.
         /// </returns>
-        Project GetByIdOrDefault(Guid id);
+        User GetByIdOrDefault(Guid id);
 
         /// <summary>
         /// Deletes the entity with the provided id.
         /// </summary>
-        /// <param name="project">
-        /// The target project to be deleted.
+        /// <param name="user">
+        /// The target user being deleted.
         /// </param>
         /// <returns>
-        /// The <see cref="bool"/>.
+        /// The <see cref="User"/>.
         /// </returns>
-        bool Delete(Project project);
+        bool Delete(User user);
 
         /// <summary>
-        /// Creates provided entities into the persistence store.
+        /// The bulk create method accepts a set of entries to perform a bulk insert on.
         /// </summary>
-        /// <param name="projects">
-        /// The projects being created.
+        /// <param name="userSet">
+        /// The user set to be inserted.
         /// </param>
         /// <returns>
-        /// The <see cref="IList"/>.
+        /// The <see cref="IList"/> of created projects.
         /// </returns>
-        IList<Project> CreateMany(ISet<Project> projects);
+        IList<User> CreateMany(ISet<User> userSet);
     }
 }

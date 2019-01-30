@@ -8,7 +8,7 @@
     /// <summary>
     /// The endpoint base test class provides common access to resources for testing APU endpoints.
     /// </summary>
-    public class EndpointBaseTest : IClassFixture<IntegrationTestsApplicationFactory<Startup>>
+    public class EndpointBaseTests : IClassFixture<IntegrationTestsApplicationFactory<Startup>>
     {
         #region Constructors
 

@@ -1,9 +1,9 @@
 ﻿namespace Prizma.Persistence.Repositories
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
     using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +11,10 @@
     using Prizma.Domain.Repositories;
 
     /// <inheritdoc />
-    /// <summary>
-    /// The repository base class contains any common methods required for individual implementation of repositories.
-    /// </summary>
-    /// <typeparam name="T">
-    /// </typeparam>
-    public abstract class RepositoryBase<T> : IRepository<T, Guid> where T : DomainBase<Guid>
+    public abstract class RepositoryBase<TEntity> : IRepository<TEntity, Guid> where TEntity : DomainBase<Guid>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="RepositoryBase{T}"/> class.
+        /// Initializes a new instance of the <see cref="RepositoryBase{TEntity}"/> class.
         /// </summary>
         /// <param name="context">
         /// The context.
@@ -30,77 +25,55 @@
         }
 
         /// <summary>
-        /// Gets the db context.
+        /// Gets the database context.
         /// </summary>
         protected DbContext Context { get; }
 
-        /// <summary>
-        /// Adds an entity to the persistence context.
-        /// </summary>
-        /// <param name="entity">
-        /// The entity being added.
-        /// </param>
-        /// <returns>
-        /// The <see cref="T"/>.
-        /// </returns>
-        public virtual T Add(T entity)
-        {
-            return this.Context.Add(entity).Entity;
-        }
+        /// <inheritdoc />
+        public virtual TEntity Add(TEntity entity) => this.Context.Add(entity).Entity;
 
-        /// <summary>
-        /// Updates an existing entity to the persistence layer.
-        /// </summary>
-        /// <param name="entity">
-        /// The entity being updated.
-        /// </param>
-        /// <returns>
-        /// The <see cref="T"/>.
-        /// </returns>
-        public virtual T Update(T entity)
-        {
-            return this.Context.Add(entity).Entity;
-        }
+        /// <inheritdoc />
+        public virtual TEntity Update(TEntity entity) => this.Context.Update(entity).Entity;
 
-        /// <summary>
-        /// Deletes an existing entity from the persistence layer.
-        /// </summary>
-        /// <param name="id">
-        /// The id key of the target entity being deleted.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public virtual bool Delete(Guid id)
+        /// <inheritdoc />
+        public virtual bool Delete(TEntity entity)
         {
-            var entity = this.Context.Find<T>(id);
             this.Context.Remove(entity);
             return true;
         }
 
-        /// <summary>
-        /// Returns a list of entities.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="IList"/>.
-        /// </returns>
-        public virtual IList<T> List()
+        /// <inheritdoc />
+        public virtual IList<TEntity> List() => this.Context.Set<TEntity>().ToList();
+
+        /// <inheritdoc />
+        public virtual TEntity FindById(Guid id) => this.Context.Find<TEntity>(id);
+
+        /// <inheritdoc />
+        public virtual async Task<TEntity> FindByIdAsync(Guid id) => await this.Context.Set<TEntity>().FindAsync(id);
+
+        /// <inheritdoc />
+        public virtual async Task<TEntity> AddAsync(TEntity entity)
         {
-            return this.Context.Set<T>().ToList();
+            var entityTask = await this.Context.Set<TEntity>().AddAsync(entity);
+            return entityTask.Entity;
         }
 
-        /// <summary>
-        /// Finds a single result by id.
-        /// </summary>
-        /// <param name="id">
-        /// The target entity id being retrieved.
-        /// </param>
-        /// <returns>
-        /// The <see cref="T"/>.
-        /// </returns>
-        public virtual T FindById(Guid id)
+        /// <inheritdoc />
+        public virtual async Task<TEntity> UpdateAsync(TEntity entity)
         {
-            return this.Context.Find<T>(id);
+            return await Task.Run(() => this.Context.Set<TEntity>().Update(entity).Entity);
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<bool> DeleteAsync(TEntity entity)
+        {
+            return await Task.Run(() => this.Delete(entity));
+        }
+
+        /// <inheritdoc />
+        public virtual async Task<IList<TEntity>> ListAsync()
+        {
+            return await this.Context.Set<TEntity>().ToListAsync();
         }
     }
 }

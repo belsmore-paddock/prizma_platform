@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reflection;
+    using System.Threading.Tasks;
 
     using AutoMapper;
 
@@ -14,15 +15,19 @@
     using JsonApiDotNetCore.Models;
     using JsonApiDotNetCore.Services;
 
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
 
     using Prizma.API.Services.Adapters;
     using Prizma.API.Services.Implementations;
+    using Prizma.API.Services.Interfaces;
     using Prizma.API.Services.Profiles;
     using Prizma.API.ViewModels;
     using Prizma.Persistence.Repositories;
@@ -62,9 +67,46 @@
             this.ConfigureApiServices(services);
             this.ConfigureDomainServices(services);
 
+            services.AddIdentity<UserResource, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddAuthentication(x =>
+                    {
+                        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    })
+                .AddJwtBearer(x =>
+                    {
+                        x.Events = new JwtBearerEvents
+                                       {
+                                           OnTokenValidated = context =>
+                                               {
+                                                   var userService = context.HttpContext.RequestServices.GetRequiredService<IUserResourceService>();
+                                                   var userId = Guid.Parse(context.Principal.Identity.Name);
+                                                   var user = userService.Get(userId);
+                                                   if (user == null)
+                                                   {
+                                                       context.Fail("Unauthorized");
+                                                   }
+
+                                                   return Task.CompletedTask;
+                                               }
+                                       };
+                        x.RequireHttpsMetadata = false;
+                        x.SaveToken = true;
+                        x.TokenValidationParameters = new TokenValidationParameters
+                                                          {
+                                                              ValidateIssuerSigningKey = true,
+                                                              // IssuerSigningKey = new SymmetricSecurityKey(key),
+                                                              ValidateIssuer = false,
+                                                              ValidateAudience = false
+                                                          };
+                    });
+
             services
                 .AddMvc()
-                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         /// <summary>
@@ -85,6 +127,7 @@
 
             app.UseCors();
             app.UseJsonApi();
+            app.UseAuthentication();
         }
 
         /// <summary>
@@ -155,9 +198,10 @@
                     options.UseSqlServer(connectionString, builder => builder.MigrationsAssembly(typeof(DatabaseContext).GetTypeInfo().Assembly.GetName().Name));
                 });
 
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddTransient<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IProjectRepository, ProjectRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
         }
 
         /// <summary>
@@ -168,7 +212,8 @@
         /// </param>
         protected virtual void ConfigureDomainServices(IServiceCollection services)
         {
-            services.AddTransient<IProjectService, ProjectService>();
+            services.AddScoped<IProjectService, ProjectService>();
+            services.AddScoped<IUserService, UserService>();
         }
 
         /// <summary>
@@ -180,6 +225,7 @@
         protected virtual void ConfigureApiServices(IServiceCollection services)
         {
             services.AddTransient<IResourceService<ProjectResource, Guid>, ProjectResourceService>();
+            services.AddTransient<IResourceService<UserResource, Guid>, UserResourceService>();
         }
     }
 }

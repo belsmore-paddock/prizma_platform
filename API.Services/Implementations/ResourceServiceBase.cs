@@ -18,7 +18,7 @@
     /// <typeparam name="T">
     /// Resource base class type.
     /// </typeparam>
-    public abstract class ResourceServiceBase<T> : ResourceBase, ISynchronousResourceService<T>, IResourceService<T, Guid> where T : ResourceBase
+    public abstract class ResourceServiceBase<T> : ResourceBase, ISynchronousResourceService<T>, IResourceService<T, Guid> where T : class, IIdentifiable<Guid>
     {
         #region Constructors
 
@@ -47,7 +47,7 @@
         #region Public Methods
 
         /// <inheritdoc />
-        public abstract Task<T> CreateAsync(T entity);
+        public abstract Task<T> CreateAsync(T entity );
 
         /// <inheritdoc />
         public abstract Task<bool> DeleteAsync(Guid id);

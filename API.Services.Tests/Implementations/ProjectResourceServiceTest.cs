@@ -169,7 +169,7 @@
                 .WithDescription(projectResource.Description)
                 .Build();
 
-            this.mockProjectService.Setup(p => p.Get(projectResource.Id)).Returns(project);
+            this.mockProjectService.Setup(p => p.GetById(projectResource.Id)).Returns(project);
             this.mockMapper.Setup(m => m.Map<ProjectResource>(project)).Returns(projectResource);
 
             // Act
@@ -188,8 +188,13 @@
         {
             // Arrange
             var projectResourceId = Guid.NewGuid();
+            var updateProject = new ProjectBuilder()
+                .WithId()
+                .WithDescription("Testing Mr. Update Method.")
+                .Build();
 
-            this.mockProjectService.Setup(p => p.Delete(projectResourceId)).Returns(true);
+            this.mockProjectService.Setup(pr => pr.GetById(projectResourceId)).Returns(updateProject);
+            this.mockProjectService.Setup(p => p.Delete(updateProject)).Returns(true);
 
             // Act
             var result = this.projectResourceService.Delete(projectResourceId);

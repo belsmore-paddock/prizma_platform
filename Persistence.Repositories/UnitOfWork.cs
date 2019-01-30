@@ -39,6 +39,7 @@
             this.context = context;
 
             this.repositories.Add(typeof(IProjectRepository), typeof(ProjectRepository));
+            this.repositories.Add(typeof(IUserRepository), typeof(UserRepository));
         }
 
         /// <summary>

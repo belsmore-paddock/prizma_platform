@@ -1,11 +1,9 @@
 ﻿namespace Prizma.Persistence.Repositories
 {
-    using System;
-    using System.Linq;
+    using Domain.Models;
 
     using Microsoft.EntityFrameworkCore;
 
-    using Prizma.Domain.Models;
     using Prizma.Domain.Repositories;
 
     /// <summary>
@@ -22,20 +20,6 @@
         public ProjectRepository(DbContext context)
             : base(context)
         {
-        }
-
-        /// <summary>
-        /// Returns a boolean indicating whether the provided entity id already exists.
-        /// </summary>
-        /// <param name="id">
-        /// The id being checked.
-        /// </param>
-        /// <returns>
-        /// The <see cref="bool"/>.
-        /// </returns>
-        public bool Exists(Guid id)
-        {
-            return this.Context.Set<Project>().Any(p => p.Id == id);
         }
     }
 }

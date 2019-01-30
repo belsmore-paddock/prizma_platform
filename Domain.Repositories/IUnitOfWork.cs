@@ -19,12 +19,12 @@
         T FindRepository<T>();
 
         /// <summary>
-        /// Begins a transaction for the UoW.
+        /// Begins a transaction for the Unit of Work.
         /// </summary>
         void BeginTransaction();
 
         /// <summary>
-        /// Commits any pending transactions for the UoW.
+        /// Commits any pending transactions for the Unit of Work.
         /// </summary>
         void CommitTransaction();
 

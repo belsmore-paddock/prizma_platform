@@ -22,7 +22,7 @@
     /// <summary>
     /// The projects endpoint test performs happy path integration behavior validations for the projects resource.
     /// </summary>
-    public class ProjectsEndpointTest : EndpointBaseTest
+    public class ProjectsEndpointTests : EndpointBaseTest
     {
         /// <summary>
         /// The project service to be used for seeding data.
@@ -64,7 +64,7 @@
                                       project2
                                   };
 
-            this.projectService.BulkCreate(projectSet);
+            this.projectService.CreateMany(projectSet);
 
             // Act
             var response = await this.Client.GetAsync("/api/project").ConfigureAwait(false);

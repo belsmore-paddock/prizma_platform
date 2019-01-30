@@ -2,7 +2,7 @@
 {
     using System;
 
-    using Prizma.Domain.Models.Builders;
+    using Builders;
 
     /// <inheritdoc />
     /// <summary>

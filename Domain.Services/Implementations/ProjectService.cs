@@ -32,43 +32,54 @@
         /// <inheritdoc />
         public Project Create(Project entity)
         {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
             var id = entity.Id;
 
             var projectRepository = this.unitOfWork.FindRepository<IProjectRepository>();
 
-            var exists = projectRepository.Exists(id);
-            if (exists)
+            var project = this.GetByIdOrDefault(id);
+            if (project != null)
             {
-                throw new EntityAlreadyExistsException(entity.GetType(), id);
+                throw new EntityAlreadyExistsException(project.GetType(), id);
             }
 
             entity.UpdateTimeStamps();
 
             this.unitOfWork.BeginTransaction();
-            var project = projectRepository.Add(entity);
+            project = projectRepository.Add(entity);
             this.unitOfWork.CommitTransaction();
 
             return project;
         }
 
+        public Project GetByIdOrDefault(Guid id)
+        {
+            var projectRepository = this.unitOfWork.FindRepository<IProjectRepository>();
+            return projectRepository.FindById(id);
+        }
+
         /// <inheritdoc />
         public Project Update(Project entity)
         {
-            var id = entity.Id;
-            Project project;
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
 
+            var id = entity.Id;
             var projectRepository = this.unitOfWork.FindRepository<IProjectRepository>();
 
-           var exists = projectRepository.Exists(id);
-           if (!exists)
-           {
-               throw new EntityDoesNotExistException(entity.GetType(), id);
-           }
+            var project = this.GetById(id);
 
-           entity.UpdateTimeStamps();
+            project.UpdateFrom(entity);
+            project.UpdateTimeStamps();
 
             this.unitOfWork.BeginTransaction();
-            project = projectRepository.Update(entity);
+            project = projectRepository.Update(project);
             this.unitOfWork.CommitTransaction();
 
             return project;
@@ -77,41 +88,45 @@
         /// <inheritdoc />
         public IList<Project> GetAll()
         {
-            IList<Project> projects;
-
             var projectRepository = this.unitOfWork.FindRepository<IProjectRepository>();
-            projects = projectRepository.List();
+            var projects = projectRepository.List();
 
             return projects;
         }
 
         /// <inheritdoc />
-        public Project Get(Guid id)
+        public Project GetById(Guid id)
         {
-            Project project;
+            var project = this.GetByIdOrDefault(id);
 
-            var projectRepository = this.unitOfWork.FindRepository<IProjectRepository>();
-            project = projectRepository.FindById(id);
+            if (project == null)
+            {
+                throw new EntityDoesNotExistException(typeof(Project), id);
+            }
 
             return project;
         }
 
         /// <inheritdoc />
-        public bool Delete(Guid id)
+        public bool Delete(Project project)
         {
-            bool isDeleted;
+            if (project == null)
+            {
+                throw new ArgumentNullException(nameof(project));
+            }
 
             var projectRepository = this.unitOfWork.FindRepository<IProjectRepository>();
 
             this.unitOfWork.BeginTransaction();
-            isDeleted = projectRepository.Delete(id);
+            var entity = projectRepository.FindById(project.Id);
+            var isDeleted = projectRepository.Delete(entity);
             this.unitOfWork.CommitTransaction();
 
             return isDeleted;
         }
 
         /// <inheritdoc />
-        public IList<Project> BulkCreate(ISet<Project> projectSet)
+        public IList<Project> CreateMany(ISet<Project> projectSet)
         {
             var projects = new List<Project>();
 
@@ -123,6 +138,7 @@
             {
                 project.UpdateTimeStamps();
                 projectRepository.Add(project);
+                projects.Add(project);
             }
 
             this.unitOfWork.CommitTransaction();

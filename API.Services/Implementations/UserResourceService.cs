@@ -17,33 +17,33 @@
     using Prizma.Domain.Services.Interfaces;
 
     /// <summary>
-    /// The project resource service handles interaction between the UI and the domain layer.
+    /// The user resource service handles interaction between the UI and the domain layer.
     /// </summary>
-    public class ProjectResourceService : ResourceServiceBase<ProjectResource>, IProjectResourceService
+    public class UserResourceService : ResourceServiceBase<UserResource>, IUserResourceService
     {
         #region Private Fields
 
-        /// <summary>
-        /// The project service.
+        /// <summary> 
+        /// The user service.
         /// </summary>
-        private readonly IProjectService projectService;
+        private readonly IUserService userService;
 
         #endregion
 
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ProjectResourceService"/> class.
+        /// Initializes a new instance of the <see cref="UserResourceService"/> class.
         /// </summary>
-        /// <param name="projectService">
-        /// The project service instance.
+        /// <param name="userService">
+        /// The user service instance.
         /// </param>
         /// <param name="mapper">
         /// The auto-mapper instance.
         /// </param>
-        public ProjectResourceService(IProjectService projectService, IMapper mapper) : base(mapper)
+        public UserResourceService(IUserService userService, IMapper mapper) : base(mapper)
         {
-            this.projectService = projectService;
+            this.userService = userService;
         }
 
         #endregion
@@ -51,7 +51,7 @@
         #region Public Methods
 
         /// <summary>
-        /// Creates a new project resource asynchronously.
+        /// Creates a new user resource asynchronously.
         /// </summary>
         /// <param name="resource">
         /// The resource model being persisted.
@@ -59,13 +59,13 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<ProjectResource> CreateAsync(ProjectResource resource)
+        public override async Task<UserResource> CreateAsync(UserResource resource)
         {
-            return Task.Run(() => this.Create(resource));
+            return await Task.Run(() => this.Create(resource));
         }
 
         /// <summary>
-        /// Updates a new project resource asynchronously.
+        /// Updates a new user resource asynchronously.
         /// </summary>
         /// <param name="id">
         /// The unique id of the model being updated.
@@ -76,9 +76,9 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<ProjectResource> UpdateAsync(Guid id, ProjectResource resource)
+        public override async Task<UserResource> UpdateAsync(Guid id, UserResource resource)
         {
-            return Task.Run(() => this.Update(id, resource));
+            return await Task.Run(() => this.Update(id, resource));
         }
 
         /// <summary>
@@ -110,20 +110,20 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<bool> DeleteAsync(Guid id)
+        public override async Task<bool> DeleteAsync(Guid id)
         {
-            return Task.Run(() => this.Delete(id));
+            return await Task.Run(() => this.Delete(id));
         }
 
         /// <summary>
-        /// The get async.
+        /// The get async method returns a task yielding a list of users.
         /// </summary>
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<IEnumerable<ProjectResource>> GetAsync()
+        public override async Task<IEnumerable<UserResource>> GetAsync()
         {
-            return Task.Run(() => this.Get());
+            return await Task.Run(() => this.Get());
         }
 
         /// <summary>
@@ -135,9 +135,9 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<ProjectResource> GetAsync(Guid id)
+        public override async Task<UserResource> GetAsync(Guid id)
         {
-            return Task.Run(() => this.Get(id));
+            return await Task.Run(() => this.Get(id));
         }
 
         /// <summary>
@@ -152,9 +152,9 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<object> GetRelationshipsAsync(Guid id, string relationshipName)
+        public override async Task<object> GetRelationshipsAsync(Guid id, string relationshipName)
         {
-            return Task.Run(() => this.GetRelationships(id, relationshipName));
+            return await Task.Run(() => this.GetRelationships(id, relationshipName));
         }
 
         /// <summary>
@@ -169,21 +169,21 @@
         /// <returns>
         /// The <see cref="Task"/>.
         /// </returns>
-        public override Task<object> GetRelationshipAsync(Guid id, string relationshipName)
+        public override async Task<object> GetRelationshipAsync(Guid id, string relationshipName)
         {
-            return Task.Run(() => this.GetRelationship(id, relationshipName));
+            return await Task.Run(() => this.GetRelationship(id, relationshipName));
         }
 
         /// <summary>
-        /// Creates a new project resource synchronously.
+        /// Creates a new user resource synchronously.
         /// </summary>
         /// <param name="resource">
         /// The resource being created.
         /// </param>
         /// <returns>
-        /// The <see cref="ProjectResource"/>.
+        /// The <see cref="UserResource"/>.
         /// </returns>
-        public override ProjectResource Create(ProjectResource resource)
+        public override UserResource Create(UserResource resource)
         {
             return this.DoPerformOperation(() => this.DoCreate(resource));
         }
@@ -199,11 +199,8 @@
         /// </returns>
         public override bool Delete(Guid id)
         {
-            return this.DoPerformOperation(() =>
-                {
-                    var project = this.projectService.GetById(id);
-                    return this.projectService.Delete(project);
-                });
+            var user = this.userService.GetById(id);
+            return this.DoPerformOperation(() => this.userService.Delete(user));
         }
 
         /// <summary>
@@ -212,7 +209,7 @@
         /// <returns>
         /// The <see cref="IEnumerable"/>.
         /// </returns>
-        public override IEnumerable<ProjectResource> Get()
+        public override IEnumerable<UserResource> Get()
         {
             return this.DoPerformOperation(this.DoGet);
         }
@@ -224,9 +221,9 @@
         /// The target resource id being retrieved.
         /// </param>
         /// <returns>
-        /// The <see cref="ProjectResource"/>.
+        /// The <see cref="UserResource"/>.
         /// </returns>
-        public override ProjectResource Get(Guid id)
+        public override UserResource Get(Guid id)
         {
             return this.DoPerformOperation(() => this.DoGetById(id));
         }
@@ -275,9 +272,9 @@
         /// The target resource being updated.
         /// </param>
         /// <returns>
-        /// The <see cref="ProjectResource"/>.
+        /// The <see cref="UserResource"/>.
         /// </returns>
-        public override ProjectResource Update(Guid id, ProjectResource resource)
+        public override UserResource Update(Guid id, UserResource resource)
         {
             if (id != resource.Id)
             {
@@ -309,30 +306,30 @@
         #region Private Methods
 
         /// <summary>
-        /// Does the operation to retrieve a single project resource by id.
+        /// Does the operation to retrieve a single user resource by id.
         /// </summary>
         /// <param name="id">
         /// The id of the target resource to be retrieved.
         /// </param>
         /// <returns>
-        /// The <see cref="ProjectResource"/>.
+        /// The <see cref="UserResource"/>.
         /// </returns>
-        private ProjectResource DoGetById(Guid id)
+        private UserResource DoGetById(Guid id)
         {
-            var resultEntity = this.projectService.GetById(id);
-            return this.Mapper.Map<ProjectResource>(resultEntity);
+            var resultEntity = this.userService.GetById(id);
+            return this.Mapper.Map<UserResource>(resultEntity);
         }
 
         /// <summary>
-        /// Does the operation to do a full get of project resources.
+        /// Does the operation to do a full get of user resources.
         /// </summary>
         /// <returns>
-        /// The <see cref="IEnumerable"/> of project resources.
+        /// The <see cref="IEnumerable"/> of user resources.
         /// </returns>
-        private IEnumerable<ProjectResource> DoGet()
+        private IEnumerable<UserResource> DoGet()
         {
-            var resultEntities = this.projectService.GetAll();
-            var resultResources = this.Mapper.Map<IList<ProjectResource>>(resultEntities);
+            var resultEntities = this.userService.GetAll();
+            var resultResources = this.Mapper.Map<IList<UserResource>>(resultEntities);
             return resultResources.AsEnumerable();
         }
 
@@ -343,35 +340,38 @@
         /// The resource being created.
         /// </param>
         /// <returns>
-        /// The <see cref="ProjectResource"/>.
+        /// The <see cref="UserResource"/>.
         /// </returns>
-        private ProjectResource DoCreate(ProjectResource resource)
+        private UserResource DoCreate(UserResource resource)
         {
-            var entity = new ProjectBuilder()
+            var entity = new UserBuilder()
                 .WithId()
-                .WithDescription(resource.Description)
+                .WithUserName(resource.UserName)
+                .WithEmail(resource.Email)
+                .WithPasswordHash(resource.PasswordHash)
+                .WithActive()
                 .Build();
 
-            var resultEntity = this.projectService.Create(entity);
-            return this.Mapper.Map<ProjectResource>(resultEntity);
+            var resultEntity = this.userService.Create(entity);
+            return this.Mapper.Map<UserResource>(resultEntity);
         }
 
         /// <summary>
-        /// Does the resource update.
+        /// Does the <paramref name="resource"/> update.
         /// </summary>
         /// <param name="resource">
         /// The resource being updated.
         /// </param>
         /// <returns>
-        /// The <see cref="ProjectResource"/>.
+        /// The <see cref="UserResource"/>.
         /// </returns>
-        private ProjectResource DoUpdate(ProjectResource resource)
+        private UserResource DoUpdate(UserResource resource)
         {
-            var entity = this.Mapper.Map<Project>(resource);
-            var resultEntity = this.projectService.Update(entity);
-            return this.Mapper.Map<ProjectResource>(resultEntity);
+            var entity = this.Mapper.Map<User>(resource);
+            var resultEntity = this.userService.Update(entity);
+            return this.Mapper.Map<UserResource>(resultEntity);
         }
 
         #endregion
     }
-} 
+}
