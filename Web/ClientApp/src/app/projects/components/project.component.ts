@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Resource } from 'ngx-jsonapi';
 import { ProjectsService, Project } from '../projects.service';
 
 @Component({
@@ -8,11 +7,10 @@ import { ProjectsService, Project } from '../projects.service';
     templateUrl: './project.component.html'
 })
 export class ProjectComponent {
-    public project: Project;
+    project: Project;
 
     public constructor(
         protected projectsService: ProjectsService,
-
         private route: ActivatedRoute
     ) {
         route.params.subscribe(({ id }) => {
@@ -28,20 +26,21 @@ export class ProjectComponent {
     public newProject() {
         let project = this.projectsService.new();
         project.attributes.description = prompt('New project description:', '');
-        if (!project.attributes.description) {
-            return;
-        }
 
+        if (project.attributes.description) {
         project.save()
-          .subscribe(success => {
+          .subscribe((): void => {
             console.log('project saved', project.toObject());
           });
+      } else {
+        console.log('project description missing.');
+      }
     }
 
     public updateProject() {
       this.project.attributes.description = prompt('Project description:', this.project.attributes.description);
 
-        this.project.save().subscribe(success => {
+        this.project.save().subscribe((): void => {
           console.log('project saved', this.project.toObject());
         });
     }
